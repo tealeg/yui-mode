@@ -12,7 +12,7 @@
 ;;; Code:
 
 
-(defun yui-point-at-end-of-openning-boilerplate ()
+(defun yui-point-at-end-of-opening-boilerplate ()
   "Return the point (as an integer) at the end of the YUI.add boilerplate."
   (save-excursion
     (goto-char (point-min))
@@ -34,14 +34,14 @@
 (defun yui-narrow-to-non-boilerplate-region ()
   "Narrow the buffer, excluding the YUI.add boilerplate."
   (interactive)
-  (let ((beginning (yui-point-at-end-of-openning-boilerplate))
+  (let ((beginning (yui-point-at-end-of-opening-boilerplate))
         (end (yui-point-at-beginning-of-closing-boilerplate)))
     (narrow-to-region beginning end)))
 
 (defun indent-yui-region (start end &optional column)
   "Indent a region, excluding the YUI.add boilerplate.  START and END may be modified for this purpose, but COLUMN, if passed will be handend on 'indent-region' untouched."
   (interactive "r\nP")
-  (let* ((b-end (yui-point-at-end-of-openning-boilerplate))
+  (let* ((b-end (yui-point-at-end-of-opening-boilerplate))
          (b-start (yui-point-at-beginning-of-closing-boilerplate))
          (real-start (if (< start b-end) b-end start))
          (real-end (if (> end b-start) b-start end)))
