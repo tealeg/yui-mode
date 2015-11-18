@@ -70,15 +70,6 @@
   :lighter " yui-mode"
   yui-mode-map)
 
-(defadvice load (after give-yui-mode-keybindings-priority)
-  "Try to ensure that YUI mode keybinding have priority."
-  (if (not (eq (car (car minor-mode-map-alist)) 'yui-mode))
-      (let ((mykeys (assq 'yui-mode minor-mode-map-alist)))
-        (assq-delete-all 'yui-mode minor-mode-map-alist)
-        (add-to-list 'minor-mode-map-alist mykeys))))
-(ad-activate 'load)
-
-
 ;;;###autoload
 (defun turn-on-yui-mode ()
   "Turn on yui-mode."
@@ -93,9 +84,6 @@
 
 ;;;###autoload
 (define-globalized-minor-mode global-yui-mode yui-mode turn-on-yui-mode)
-
-;; Turn off the minor mode in the minibuffer
-(add-hook 'minibuffer-setup-hook #'turn-off-yui-mode)
 
 (provide 'yui-mode)
 ;;; yui-mode.el ends here
