@@ -26,12 +26,13 @@
   "Return the point (as an integer) at the begining of the end of the YUI.add boilerplate."
   (save-excursion
     (goto-char (point-max))
-    (let ((seen-close nil))
-      (while (not (looking-at "^}, \"[0-9.]*\", {\"requires\":.*"))
+    (let ((seen-close nil)
+          (early-exit nil))
+      (while (not (or early-exit (looking-at "^}, \"[0-9.]*\", {\"requires\":.*")))
         (setq seen-close (or seen-close (looking-at "^.*\);")))
         (if (and seen-close (looking-at "^[ \t]*$"))
-            (return))
-        (forward-line -1)))
+            (setq early-exit t)
+          (forward-line -1))))
     (backward-char)
     (point)))
 
