@@ -16,11 +16,16 @@
   "Return the point (as an integer) at the end of the YUI.add boilerplate."
   (save-excursion
     (goto-char (point-min))
-    (while (not (looking-at "^YUI[\(\)]*\.[a\|\|u][d\|\|s][d\|\|e].*"))
-      (forward-line))
-    (forward-line)
+    (let ((found-opening nil)
+          (found-function nil))
+      (while (not found-opening)
+        (setq found-opening (looking-at "^YUI[\(\)]*\.[a\|\|u][d\|\|s][d\|\|e].*"))
+        (if (not found-opening)
+            (forward-line)))
+      (while (not found-function)
+        (setq found-function (looking-at ".*function\(Y\).*"))
+        (forward-line)))
     (point)))
-
 
 (defun yui-point-at-beginning-of-closing-boilerplate ()
   "Return the point (as an integer) at the begining of the end of the YUI.add boilerplate."
