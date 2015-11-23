@@ -16,7 +16,7 @@
   "Return the point (as an integer) at the end of the YUI.add boilerplate."
   (save-excursion
     (goto-char (point-min))
-    (while (not (looking-at "^YUI\.add.*"))
+    (while (not (looking-at "^YUI[\(\)]*\.[a\|\|u][d\|\|s][d\|\|e].*"))
       (forward-line))
     (forward-line)
     (point)))
@@ -26,8 +26,12 @@
   "Return the point (as an integer) at the begining of the end of the YUI.add boilerplate."
   (save-excursion
     (goto-char (point-max))
-    (while (not (looking-at "^}, \"[0-9.]*\", {\"requires\":.*"))
-      (forward-line -1))
+    (let ((seen-close nil))
+      (while (not (looking-at "^}, \"[0-9.]*\", {\"requires\":.*"))
+        (setq seen-close (or seen-close (looking-at "^.*\);")))
+        (if (and seen-close (looking-at "^[ \t]*$"))
+            (return))
+        (forward-line -1)))
     (backward-char)
     (point)))
 
